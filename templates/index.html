@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telemetry Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f4f8;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h2 {
+            font-size: 24px;
+            color: #333333;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .data-container {
+            background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            color: #3a3a3a;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .footer {
+            margin-top: 10px;
+            text-align: center;
+            color: #777777;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Telemetry Data</h2>
+        <div class="data-container" id="dataDisplay">{}</div>
+        <div class="footer">Real-time data from boat telemetry</div>
+    </div>
+
+    <!-- Socket.IO script -->
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+    <script type="text/javascript">
+        const socket = io();
+
+        socket.on('connect', () => {
+            console.log("Connected to WebSocket server.");
+        });
+
+        // Listen for data updates from the server
+        socket.on("update_data", function(data) {
+            console.log(data)
+            // Parse JSON data and format for display
+            //const parsedData = JSON.parse(data);
+            document.getElementById("dataDisplay").innerText = data;
+        });
+    </script>
+</body>
+</html>
