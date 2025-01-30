@@ -1,0 +1,66 @@
+version: '3'
+
+services:
+  grafana:
+    image: grafana/grafana:latest
+    container_name: my-grafana-db
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana  # Persistent volume for Grafana data
+      - ./provisioning:/etc/grafana/provisioning  # Local configuration files
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_INSTALL_PLUGINS=grafana-mqtt-datasource  # MQTT plugin
+    depends_on:
+      - influxdb
+      - mosquitto  # Ensure Grafana waits for InfluxDB and Mosquitto to start
+
+  influxdb:
+    image: influxdb:latest
+    container_name: my-influxdb
+    ports:
+      - "8086:8086"  # InfluxDB default port
+    volumes:
+      - type: volume
+        source: influxdb2-data
+        target: /var/lib/influxdb2
+      - type: volume
+        source: influxdb2-config
+        target: /etc/influxdb2
+    environment:
+      DOCKER_INFLUXDB_INIT_MODE: setup
+      DOCKER_INFLUXDB_INIT_USERNAME: admin
+      DOCKER_INFLUXDB_INIT_PASSWORD: admin
+      DOCKER_INFLUXDB_INIT_ORG: docs
+      DOCKER_INFLUXDB_INIT_BUCKET: boat_telemetry
+
+  mosquitto:
+    image: eclipse-mosquitto:latest
+    container_name: mqtt-broker
+    ports:
+      - "1884:1884"  # MQTT default port
+      - "9001:9001"  # WebSocket port for MQTT over WebSockets
+    volumes:
+      - "./mosquitto.conf:/mosquitto/config/mosquitto.conf"
+      - mosquitto_data:/mosquitto/data
+      - mosquitto_log:/mosquitto/log
+    environment:
+      - MOSQUITTO_ALLOW_ANONYMOUS=true  # Enable anonymous access
+
+volumes:
+  grafana_data:
+    driver: local
+  influxdb2-data:
+    driver: local
+  influxdb2-config:
+    driver: local
+  mosquitto_data:
+    driver: local
+  mosquitto_log:
+    driver: local
+  nodered_data:
+    driver: local
