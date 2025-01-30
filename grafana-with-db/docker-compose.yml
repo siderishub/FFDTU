@@ -34,7 +34,7 @@ services:
     environment:
       DOCKER_INFLUXDB_INIT_MODE: setup
       DOCKER_INFLUXDB_INIT_USERNAME: admin
-      DOCKER_INFLUXDB_INIT_PASSWORD: admin
+      DOCKER_INFLUXDB_INIT_PASSWORD: 123456789qwerty
       DOCKER_INFLUXDB_INIT_ORG: docs
       DOCKER_INFLUXDB_INIT_BUCKET: boat_telemetry
 
@@ -42,8 +42,8 @@ services:
     image: eclipse-mosquitto:latest
     container_name: mqtt-broker
     ports:
-      - "1884:1884"  # MQTT default port
-      - "9001:9001"  # WebSocket port for MQTT over WebSockets
+      - "1883:1883"  # MQTT default port
+      - "9000:9000"  # WebSocket port for MQTT over WebSockets
     volumes:
       - "./mosquitto.conf:/mosquitto/config/mosquitto.conf"
       - mosquitto_data:/mosquitto/data

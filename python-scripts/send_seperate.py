@@ -9,7 +9,7 @@ df = pd.read_csv("seatrial.csv")  # Replace with your file path
 
 # Set up MQTT client
 mqtt_client = mqtt.Client(client_id = "ExcelTelemetryPublisher")
-mqtt_client.connect("localhost", 1884, 60)
+mqtt_client.connect("0.0.0.0", 1883, 60)
 
 # Publish each row of telemetry data as an MQTT message
 

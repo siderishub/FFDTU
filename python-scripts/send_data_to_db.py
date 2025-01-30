@@ -3,8 +3,8 @@ from influxdb_client import InfluxDBClient, Point
 from influxdb_client.client.write_api import SYNCHRONOUS
 
 # Configure InfluxDB connection
-INFLUXDB_URL = "http://localhost:8086"  # Replace with your InfluxDB URL
-INFLUXDB_TOKEN = "fIrjZWeaojCHcvou1O2y3qytnUYd6gGDE7XhF2ZVCrvQsKQCbuC3P7HPJOM_aI4d4RrXz_DdvirGVnzZIT6JZQ=="      # Replace with your InfluxDB token
+INFLUXDB_URL = "http://0.0.0.0:8086"  # Replace with your InfluxDB URL
+INFLUXDB_TOKEN = "Token MNSokMu01-s3rlGahH5FRq17yE_vDqJgQCWX3CK_VeMBGLZDLqEFn04m1sPHfesUC1xg14kEY3PSByYJ3im-Gw=="      # Replace with your InfluxDB token
 INFLUXDB_ORG = "docs"                   # Replace with your organization
 INFLUXDB_BUCKET = "boat_telemetry"      # Replace with your bucket
 
@@ -47,7 +47,7 @@ def write_to_influxdb(data):
 # MQTT Configuration
 mqtt_client = mqtt.Client()
 mqtt_client.on_message = on_message
-mqtt_client.connect("localhost", 1884)  # Update host and port if necessary
+mqtt_client.connect("localhost", 1883)  # Update host and port if necessary
 
 # Subscribe to all telemetry topics
 topics = [
